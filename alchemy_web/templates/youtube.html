@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Youtube search</title>
+        <!-- <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Awesome videos!" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    </head>
+    <style>
+        
+        .card { border-radius : 10px; }
+    </style>
+    <body>  
+        <div class="container">
+            <h1 class="w100 text-center"style="color:black;"><i class="fa fa-youtube-play" style="font-size:48px;color:red"></i>    YouTube</h1>
+       
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <form action="#">
+                            <p><input type="text" id="search" placeholder="search..." autocomplete="off" class="form-control" /></p>
+                            <p><input type="submit" value="Search" class="form-control btn btn-danger w100" ></p>
+                        </form>
+                    </div> 
+                </div>       
+                
+        </div>        
+        <div class="container"style="margin-left:130px;">                     
+                           
+             <div id="results"style="margin:20px;"></div>
+                            
+        </div>
+            
+        
+        <!--scripts-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+        <script>
+        $(function(){
+            
+            $("form").on("submit", function(e) {
+                e.preventDefault();
+                //prepere for request
+                var request = gapi.client.youtube.search.list({
+                    part:"snippet",
+                    type:"video",
+                    q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+                    maxResults:10,
+                    order: "viewCount",
+                    publishedAfter: "2018-01-01T00:00:00Z"
+                });
+                //execute the request
+                request.execute(function(response) {
+                    console.log(response)
+
+                    
+
+                    $.each(response.items, function(index, item) {
+                        $('#results').append(`
+                        
+                         <iframe class="video w100" width="440" height="20" src="//www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                              
+                        `);
+                    })
+                
+                    resetVideoHeight();
+                });
+            });
+            $(window).on("resize", resetVideoHeight);
+        });
+        function resetVideoHeight() {
+            $(".video").css("height",$("#results").width() *10/80);
+        }
+        function init(){
+            gapi.client.setApiKey("AIzaSyD4sfSOcJ3fEO4rqNImAsi_PSlayyD2gj8")
+            gapi.client.load("youtube", "v3", function(){
+                //yt api is ready 
+            });
+        }
+                
+
+        </script>
+        <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    
+    
+    </body>
+</html>
+
+{%endblock%}

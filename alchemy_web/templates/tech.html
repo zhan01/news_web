@@ -1,0 +1,179 @@
+<html>
+
+<head>
+
+    <title>API News</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+    
+
+    <style type="text/css">
+
+        #loader{
+           
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+        }
+        .container{
+            width: 5000px;
+        }
+        .progress{
+            display: none;
+        }
+
+        errorMsg{
+            font-size:34px;
+            height: 100vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            
+        }
+        .publishon{
+            text-align: right;
+            color: #8e8e8e;
+            font-style: italic;
+            margin-right: 2em;
+        }
+       
+        
+        .carousel{
+            height: 100%;
+            
+        }
+        .material-icons.md1::before{
+        content:"search"; 
+        }
+
+        .material-icons.md1:hover::before{
+        content:"navigate_next"; 
+        }
+        
+    
+
+
+
+    </style>
+</head>
+<body>
+    <nav>
+            <div class="nav-wrapper">
+                    <a href="/" class="brand-logo"style="margin-left:30px;">Alchemy<i class="material-icons medium hide-on-small-only" id="icons"> details</i></a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                          <li><a href="{{ url_for('dashboard') }}"><i class="large material-icons">account_circle</i></a></li>
+                          <li><a href="/sport">Sport</a></li>
+                          <li><a href="/health">Health</a></li>
+                          <li><a href="/tech">Technology</a></li>
+                          <li><a href="/entertainment">Entertaiment</a></li>
+                          <li><a href="/science">Science</a></li>
+                          <li><a href="/business">Business</a></li>
+                    </ul>
+                  </div>
+    </nav>
+   
+    <div class="w3-container text-center" style="margin-left: -300px;">           
+         
+
+            <<div id="loader">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+
+        
+        <div class="carousel slide">
+                <div id="newsResult" ></div>
+            </div>
+       
+        
+    </div>
+    
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+  
+    <script>
+
+    $(document).ready(function(){
+        
+    let url = "https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=6d6cf78ac01b4e3496008c26a549445b";
+        
+        $.ajax({
+            url: url,
+            method: "GET",
+            dataType: "json",
+
+            beforeSend: function(){
+                $(".progress").show();
+            },
+
+            complete: function(){
+                $(".progress").hide();
+            },
+
+            success: function(news){
+                let output = "";
+                let latestNews = news.articles;
+                
+                for(var i in latestNews){
+                    output +=`          
+                    <div class="carousel-item" style="margin-top:100px;">
+                        <div class="card sticky-action ">
+                            <div class="card z-depth-5" style="width:650;height:750;">
+                                <h1 class=" card-title"style="font-size:30px;">${latestNews[i].title}</h1>
+                                <img src="${latestNews[i].urlToImage}" class="card-image responsive-img" style="width:650;height:400;">
+
+                                <p class="card-content">${latestNews[i].content}</p>
+                                <p class="publishon">Published on: ${latestNews[i].publishedAt}</p>
+                                <a href="${latestNews[i].url}" class="card-btn btn badge">Read more</a>
+                            </div>
+                        </div>
+                    </div>                                    
+                    `;
+                }
+
+                if(output != ""){
+
+                    $("#newsResult").html(output);
+
+                    $('#newsResult').carousel({
+                            dist:-150,
+                            shift:0,
+                            padding:800,
+                            // fullWidth: true,
+                            // indicators: true,
+                            // noWrap: true
+                            // shift:-100,
+                            
+
+                    });
+
+                }else{
+                    let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                    $("#newsResult").html(NewsnotFound);
+                }
+            },
+
+            error: function(){
+                console.log("error");
+            }
+
+        });
+
+    });
+    </script>
+    
+</body>
+</html>

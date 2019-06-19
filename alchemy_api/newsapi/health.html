@@ -1,0 +1,74 @@
+<html>
+
+<head>
+
+    <title>API News</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+
+
+    <style type="text/css">
+
+        #loader{
+            height:100vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .progress{
+            display: none;
+        }
+
+        errorMsg{
+            font-size:34px;
+            height: 100vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand-logo"style="margin-left:30px;">N E W S<i class="material-icons medium hide-on-small-only" id="icons"> search</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="sport.html">Sport</a></li>
+            <li><a href="health.html">Health</a></li>
+            <li><a href="tech.html">Technology</a></li>
+            <li><a href="entertainment.html">Entertaiment</a></li>
+            <li><a href="scince.html">Scince</a></li>
+            <li><a href="business.html">Business</a></li>
+            </ul>
+        </div>
+    </nav>
+   
+    <div class="container">
+
+        <div class="row">
+                <div id="newsResult"></div>
+        </div>
+
+        <div id="loader">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+
+       
+ 
+    </div>
+
+
+<script src="jquery-3.4.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="healthapi.js"></script>
+    
+</body>
+</html>

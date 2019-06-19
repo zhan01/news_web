@@ -1,0 +1,321 @@
+
+<html>
+
+        <head>
+        
+            <title>API News</title>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+        
+        </head>
+        <body>
+                <nav>
+                        <div class="nav-wrapper">
+                          <a href="/" class="brand-logo"style="margin-left:30px;">N E W S<i class="material-icons medium hide-on-small-only" id="icons"> search</i></a>
+                          <ul id="nav-mobile" class="right hide-on-med-and-down">
+                                <li><a href="/sport">Sport</a></li>
+                                <li><a href="/health">Health</a></li>
+                                <li><a href="/tech">Technology</a></li>
+                                <li><a href="/entertainment">Entertaiment</a></li>
+                                <li><a href="/science">Scince</a></li>
+                                <li><a href="/business">Business</a></li>
+                          </ul>
+                        </div>
+                      </nav>
+            <div class="container">
+        
+               
+               
+                <form id="searchForm"style="margin-top:100px;">
+                    <div class="input-field">
+                        <i class="material-icons prefix">public</i>
+                        <input type="text" id="searchquery">
+                        <label for="searchquery">search for news...</label>
+                    </div>
+                    <div class="row">
+                        <input type="submit" id="searchbtn" class="btn col m2 s12" value="search">
+                        <input type="reset" class="btn col m2 red right" value="clear" style="margin-top:3px;">
+                    </div>
+                </form>
+        
+                <div id="loader" style="display:none;">
+                    <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                </div>
+        
+                <div class="row">
+                     <div id="newsResult"></div>
+                </div>
+        
+        
+          
+            </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+        
+        
+        <script >
+        
+        $(document).ready(function(){
+        
+        $("#searchForm").on("submit",function(e){
+        
+            e.preventDefault();
+            
+            let query = $("#searchquery").val();
+            let url = "https://newsapi.org/v2/top-headlines?q="+query+"&country=us&category=business&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+            let url2 = "https://newsapi.org/v2/top-headlines?q="+query+"&country=us&category=health&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+            let url3 = "https://newsapi.org/v2/top-headlines?q="+query+"&country=us&category=entertainment&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+            let url4 = "https://newsapi.org/v2/top-headlines?q="+query+"&country=us&category=science&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+            let url5 = "https://newsapi.org/v2/top-headlines?q="+query+"&country=us&category=technology&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+            if(query !== ""){
+                
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    dataType: "json",
+        
+                    beforeSend: function(){
+                        $("#loader").show();
+                    },
+        
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+        
+                    success: function(news){
+                        let output = "";
+                        let latestNews = news.articles;
+                        
+                        for(var i in latestNews){
+                            output +=`
+                                <div class="col l6 m6 s12">
+                                    <h4>${latestNews[i].title}</h4>
+                                    <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                                    <p>${latestNews[i].descripton}</p>
+                                    <p>${latestNews[i].content}</p>
+                                    <p>Published on: ${latestNews[i].publishedAt}</p>
+                                    <a href="${latestNews[i].url}" class="btn">Read more</a>
+                                </div>
+                            `;
+                        }
+        
+                        if(output != ""){
+        
+                            $("#newsResult").html(output);
+        
+                        }else{
+                            let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                            $("#newsResult").html(NewsnotFound);
+                        }
+                    },
+        
+                    error: function(){
+                        console.log("error");
+                    }
+        
+                });
+        
+        
+                $.ajax({
+                    url: url2,
+                    method: "GET",
+                    dataType: "json",
+        
+                    beforeSend: function(){
+                        $("#loader").show();
+                    },
+        
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+        
+                    success: function(news){
+                        let output = "";
+                        let latestNews = news.articles;
+                        
+                        for(var i in latestNews){
+                            output +=`
+                                <div class="col l6 m6 s12">
+                                    <h4>${latestNews[i].title}</h4>
+                                    <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                                    <p>${latestNews[i].descripton}</p>
+                                    <p>${latestNews[i].content}</p>
+                                    <p>Published on: ${latestNews[i].publishedAt}</p>
+                                    <a href="${latestNews[i].url}" class="btn">Read more</a>
+                                </div>
+                            `;
+                        }
+        
+                        if(output != ""){
+        
+                            $("#newsResult").html(output);
+        
+                        }else{
+                            let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                            $("#newsResult").html(NewsnotFound);
+                        }
+                    },
+        
+                    error: function(){
+                        console.log("error");
+                    }
+        
+                });
+        
+                $.ajax({
+                    url: url3,
+                    method: "GET",
+                    dataType: "json",
+        
+                    beforeSend: function(){
+                        $("#loader").show();
+                    },
+        
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+        
+                    success: function(news){
+                        let output = "";
+                        let latestNews = news.articles;
+                        
+                        for(var i in latestNews){
+                            output +=`
+                                <div class="col l6 m6 s12">
+                                    <h4>${latestNews[i].title}</h4>
+                                    <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                                    <p>${latestNews[i].descripton}</p>
+                                    <p>${latestNews[i].content}</p>
+                                    <p>Published on: ${latestNews[i].publishedAt}</p>
+                                    <a href="${latestNews[i].url}" class="btn">Read more</a>
+                                </div>
+                            `;
+                        }
+        
+                        if(output != ""){
+        
+                            $("#newsResult").html(output);
+        
+                        }else{
+                            let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                            $("#newsResult").html(NewsnotFound);
+                        }
+                    },
+        
+                    error: function(){
+                        console.log("error");
+                    }
+        
+                });
+        
+        
+                $.ajax({
+                    url: url4,
+                    method: "GET",
+                    dataType: "json",
+        
+                    beforeSend: function(){
+                        $("#loader").show();
+                    },
+        
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+        
+                    success: function(news){
+                        let output = "";
+                        let latestNews = news.articles;
+                        
+                        for(var i in latestNews){
+                            output +=`
+                                <div class="col l6 m6 s12">
+                                    <h4>${latestNews[i].title}</h4>
+                                    <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                                    <p>${latestNews[i].descripton}</p>
+                                    <p>${latestNews[i].content}</p>
+                                    <p>Published on: ${latestNews[i].publishedAt}</p>
+                                    <a href="${latestNews[i].url}" class="btn">Read more</a>
+                                </div>
+                            `;
+                        }
+        
+                        if(output != ""){
+        
+                            $("#newsResult").html(output);
+        
+                        }else{
+                            let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                            $("#newsResult").html(NewsnotFound);
+                        }
+                    },
+        
+                    error: function(){
+                        console.log("error");
+                    }
+        
+                });
+        
+        
+        
+                $.ajax({
+                    url: url5,
+                    method: "GET",
+                    dataType: "json",
+        
+                    beforeSend: function(){
+                        $("#loader").show();
+                    },
+        
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+        
+                    success: function(news){
+                        let output = "";
+                        let latestNews = news.articles;
+                        
+                        for(var i in latestNews){
+                            output +=`
+                                <div class="col l6 m6 s12">
+                                    <h4>${latestNews[i].title}</h4>
+                                    <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                                    <p>${latestNews[i].descripton}</p>
+                                    <p>${latestNews[i].content}</p>
+                                    <p>Published on: ${latestNews[i].publishedAt}</p>
+                                    <a href="${latestNews[i].url}" class="btn">Read more</a>
+                                </div>
+                            `;
+                        }
+        
+                        if(output != ""){
+        
+                            $("#newsResult").html(output);
+        
+                        }else{
+                            let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                            $("#newsResult").html(NewsnotFound);
+                        }
+                    },
+        
+                    error: function(){
+                        console.log("error");
+                    }
+        
+                });
+        
+        
+            }else {
+                console.log("please enter something !");
+            }
+           
+        });
+        });
+        
+        </script>
+            
+        </body>
+        </html>

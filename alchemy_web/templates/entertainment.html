@@ -1,0 +1,129 @@
+<html>
+
+<head>
+
+    <title>API News</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+
+
+    <style type="text/css">
+
+        #loader{
+            height:100vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .progress{
+            display: none;
+        }
+
+        errorMsg{
+            font-size:34px;
+            height: 100vh;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+            <div class="nav-wrapper">
+                    <a href="/" class="brand-logo"style="margin-left:30px;">Alchemy<i class="material-icons medium hide-on-small-only" id="icons"> details</i></a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                          <li><a href="{{ url_for('dashboard') }}"><i class="large material-icons">account_circle</i></a></li>
+                          <li><a href="/sport">Sport</a></li>
+                          <li><a href="/health">Health</a></li>
+                          <li><a href="/tech">Technology</a></li>
+                          <li><a href="/entertainment">Entertaiment</a></li>
+                          <li><a href="/science">Science</a></li>
+                          <li><a href="/business">Business</a></li>
+                    </ul>
+                  </div>
+    </nav>
+   
+    <div class="container">
+
+        <div class="row">
+                <div id="newsResult"></div>
+        </div>
+
+        <div id="loader">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+
+       
+ 
+    </div>
+
+
+<script src="jquery-3.4.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script >
+
+$(document).ready(function(){
+
+let url = "https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=31e6e9bf91a24a4d9fc8da17bb849d34";
+    
+    $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+
+        beforeSend: function(){
+            $(".progress").show();
+        },
+
+        complete: function(){
+            $(".progress").hide();
+        },
+
+        success: function(news){
+            let output = "";
+            let latestNews = news.articles;
+            
+            for(var i in latestNews){
+                output +=`
+                    <div class="col l6 m6 s12">
+                        <h4>${latestNews[i].title}</h4>
+                        <img src="${latestNews[i].urlToImage}" class="responsive-img">
+                        <p>${latestNews[i].descripton}</p>
+                        <p>${latestNews[i].content}</p>
+                        <p>Published on: ${latestNews[i].publishedAt}</p>
+                        <a href="${latestNews[i].url}" class="btn">Read more</a>
+                    </div>
+                `;
+            }
+
+            if(output != ""){
+
+                $("#newsResult").html(output);
+
+            }else{
+                let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                $("#newsResult").html(NewsnotFound);
+            }
+        },
+
+        error: function(){
+            console.log("error");
+        }
+
+    });
+
+});
+
+</script>
+    
+</body>
+</html>

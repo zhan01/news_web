@@ -1,0 +1,176 @@
+<html>
+
+<head>
+
+    <title>API News</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+</head>
+<style>
+        .carousel{
+                    height: 100%;
+                    
+        }
+        .material-icons.md1::before{
+        content:"search"; 
+        }
+
+        .material-icons.md1:hover::before{
+        content:"navigate_next"; 
+        }
+        .publishon{
+            text-align: right;
+            color: #8e8e8e;
+            font-style: italic;
+            margin-right: 2em;
+        }
+        .container{
+            width: 5000px;
+        }
+        .backimg{
+            background-image: url("/static/images/homebg.png");
+            background-size: cover;
+        }
+</style>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+                <a href="/index" class="brand-logo"style="margin-left:30px; background-color:e57373">Alchemy<i class="material-icons medium hide-on-small-only" id="icons"> details</i></a>
+                   
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {% if current_user.is_authenticated %}
+                
+                <li><a href="{{ url_for('dashboard') }}"><i class='far fa-user' style='font-size:36px'></i></li>
+                <li><a style="color:crimson" href="{{ url_for('logout') }}"><i class="large material-icons">exit_to_app</i></a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="business.html">Business</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="backimg">
+        <div class="w3-container text-center" style="margin-left: -300px;">           
+            
+
+                <div class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
+                
+                <div class="carousel slide">
+                        <div id="newsResult" ></div>
+                    </div>
+            
+                
+            </div>
+    </div>
+
+    
+        
+            
+
+        
+        
+        
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+        <script>
+            
+            $(document).ready(function () {
+                
+                let output = ''
+                
+                var interests = (JSON.parse('{{interests | safe}}'));
+                for (let i = 0; i < interests.length; i++) {
+                    let query = interests[i].content;
+                    let url = "https://newsapi.org/v2/everything?q=" + query + "&page=2&apiKey=6d6cf78ac01b4e3496008c26a549445b";
+                    if (query !== "") {
+                        
+                        $.ajax({
+                            url: url,
+                            method: "GET",
+                            dataType: "json",
+                            
+                            
+                            
+                            beforeSend: function () {
+                                $(".progress").show();
+                            },
+                            
+                            complete: function () {
+                                $(".progress").hide();
+                            },
+                            
+                            success: function (news) {
+                                
+                                
+                                news.articles.slice(0,1).forEach(item => {
+                                    output += `
+                                    <div class="carousel-item" style="margin-top:100px;">
+                                        <div class="card sticky-action ">
+                                            <div class="card z-depth-5" style="width:650;height:750;border-radius: 10px;">
+                                                <h1 class=" card-title"style="font-size:30px;">${item.title}</h1>
+                                                <img src="${item.urlToImage}" class="card-image responsive-img" style="width:650;height:400;">
+                                                
+                                                <p class="card-content">${item.content}</p>
+                                                <p class="publishon">Published on: ${item.publishedAt}</p>
+                                                <a href="${item.url}" class="card-btn btn badge">Read more</a>
+                                                </div>
+                                                </div>
+                                                </div> 
+                                                `})
+                                                
+                                                if (output != "") {
+                                                    
+                                                    $("#newsResult").html(output);
+                                                    
+                                                    $('#newsResult').carousel({
+                                                        dist:-150,
+                                                        shift:0,
+                                                        padding:800,
+                                                        // fullWidth: true,
+                                                        // indicators: true,
+                                                        // noWrap: true
+                                                        // shift:-100,
+                                                        
+                                                        
+                                                    });
+                                                    
+                                                } else {
+                                                    let NewsnotFound = "This news isn't available. Sorry about that. Try search for something else";
+                                                    $("#newsResult").html(NewsnotFound);
+                                                }
+                                            },
+                                            
+                                            error: function () {
+                                                console.log("error");
+                                            }
+                                            
+                                        });
+                                    } else {
+                                        console.log("please enter something !");
+                                    }
+                                    
+                                }
+                            });
+                            
+                            </script>
+                                 
+</body>
+
+
+</html>

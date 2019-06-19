@@ -1,0 +1,64 @@
+<html>
+
+<head>
+
+    <title>API News</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo" style="margin-left:30px;">N E W S<i
+                    class="material-icons medium hide-on-small-only" id="icons"> search</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sport.html">Sport</a></li>
+                <li><a href="health.html">Health</a></li>
+                <li><a href="tech.html">Technology</a></li>
+                <li><a href="entertainment.html">Entertaiment</a></li>
+                <li><a href="scince.html">Scince</a></li>
+                <li><a href="business.html">Business</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+
+
+
+        <form id="searchForm" style="margin-top:100px;">
+            <div class="input-field">
+                <i class="material-icons prefix">public</i>
+                <input type="text" id="searchquery">
+                <label for="searchquery">search for news...</label>
+            </div>
+            <div class="row">
+                <input type="submit" id="searchbtn" class="btn col m2 s12" value="search">
+                <input type="reset" class="btn col m2 red right" value="clear" style="margin-top:3px;">
+            </div>
+        </form>
+
+        <div id="loader" style="display:none;">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="newsResult"></div>
+        </div>
+
+
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+    <script src="newsapi.js"></script>
+
+</body>
+
+</html>
